@@ -20,19 +20,16 @@ scaler_path = "Scaler.pkl"
 # Load the model, vectorizer, and scaler
 try:
     model = joblib.load(model_path)
-    st.success("Model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading model: {e}")
 
 try:
     vectorizer = joblib.load(vectorizer_path)
-    st.success("Vectorizer loaded successfully!")
 except Exception as e:
     st.error(f"Error loading vectorizer: {e}")
 
 try:
     scaler = joblib.load(scaler_path)
-    st.success("Scaler loaded successfully!")
 except Exception as e:
     st.error(f"Error loading scaler: {e}")
 
