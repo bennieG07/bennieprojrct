@@ -3,44 +3,41 @@ import joblib
 import numpy as np
 import pandas as pd
 import streamlit as st
+import nltk
 from textblob import TextBlob
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
+# Download the necessary NLTK resources (if not already downloaded)
+nltk.download('stopwords', quiet=True)
+nltk.download('wordnet', quiet=True)
+
+# Define paths to the model, vectorizer, and scaler
+model_path = "Best_Logistic_Regression_Model.pkl"
+vectorizer_path = "Vectorizer.pkl"
+scaler_path = "Scaler.pkl"
+
+# Load the model, vectorizer, and scaler
+try:
+    model = joblib.load(model_path)
+    st.success("Model loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading model: {e}")
+
+try:
+    vectorizer = joblib.load(vectorizer_path)
+    st.success("Vectorizer loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading vectorizer: {e}")
+
+try:
+    scaler = joblib.load(scaler_path)
+    st.success("Scaler loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading scaler: {e}")
+
 # Streamlit app title
 st.title("Twitter Sentiment Analysis for Fake News Detection")
-
-# File uploader for model, vectorizer, and scaler
-model_file = st.file_uploader("Upload Best_Logistic_Regression_Model.pkl", type='pkl')
-vectorizer_file = st.file_uploader("Upload Vectorizer.pkl", type='pkl')
-scaler_file = st.file_uploader("Upload Scaler.pkl", type='pkl')
-
-# Initialize model, vectorizer, and scaler
-model, vectorizer, scaler = None, None, None
-
-# Load the model if uploaded
-if model_file is not None:
-    try:
-        model = joblib.load(model_file)
-        st.success("Model loaded successfully!")
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-
-# Load the vectorizer if uploaded
-if vectorizer_file is not None:
-    try:
-        vectorizer = joblib.load(vectorizer_file)
-        st.success("Vectorizer loaded successfully!")
-    except Exception as e:
-        st.error(f"Error loading vectorizer: {e}")
-
-# Load the scaler if uploaded
-if scaler_file is not None:
-    try:
-        scaler = joblib.load(scaler_file)
-        st.success("Scaler loaded successfully!")
-    except Exception as e:
-        st.error(f"Error loading scaler: {e}")
 
 # Function definitions for cleaning and processing tweets
 def clean_text(text):
@@ -88,4 +85,4 @@ if st.button("Analyze"):
         st.success(f"Sentiment Score: {sentiment_score:.2f}")
         st.write(f"Prediction: {sentiment_label}")
     else:
-        st.warning("Please ensure all models are uploaded and enter a tweet for analysis.")
+        st.warning("Please ensure all models are loaded and enter a tweet for analysis.")
